@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureGen - Premium Password Generator</title>
+    <meta name="description" content="Generate highly secure, strong passwords instantly with SecureGen.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-mesh" id="bg-mesh"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1>Secure<span class="highlight">Gen</span> <span class="badge">PRO</span></h1>
+                <button id="history-toggle-btn" title="View Password History"><i class="fas fa-history"></i></button>
+            </div>
+            <p>Enterprise-grade password generation and entropy analysis.</p>
+        </header>
+
+        <main class="generator-box" id="card">
+            <div class="output-container">
+                <input type="text" id="password-output" readonly placeholder="P4$5W0rD!">
+                <button id="copy-btn" title="Copy to clipboard">
+                    <i class="far fa-copy"></i>
+                </button>
+            </div>
+            
+            <div class="analytics-panel">
+                <div class="strength-meter" data-strength="3">
+                    <div class="strength-header">
+                        <span>Security Level</span>
+                        <span class="strength-text" id="strength-text">Strong</span>
+                    </div>
+                    <div class="strength-bar"></div>
+                </div>
+                
+                <div class="crack-time">
+                    <i class="fas fa-microchip"></i>
+                    <div class="crack-info">
+                        <span class="crack-label">Brute-Force Est.</span>
+                        <span class="crack-val" id="crack-time-val">2.5 Million Years</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group length-group">
+                    <div class="length-header">
+                        <label for="length-slider">Character Length</label>
+                        <span id="length-val">16</span>
+                    </div>
+                    <input type="range" id="length-slider" min="8" max="64" value="16">
+                </div>
+
+                <div class="checkboxes">
+                    <div class="checkbox-column">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="uppercase" checked>
+                            <span class="checkmark"></span>
+                            Uppercase (A-Z)
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="lowercase" checked>
+                            <span class="checkmark"></span>
+                            Lowercase (a-z)
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="numbers" checked>
+                            <span class="checkmark"></span>
+                            Numbers (0-9)
+                        </label>
+                    </div>
+                    <div class="checkbox-column">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="symbols" checked>
+                            <span class="checkmark"></span>
+                            Symbols (!@#$)
+                        </label>
+                        <label class="custom-checkbox exclude">
+                            <input type="checkbox" id="exclude-ambiguous">
+                            <span class="checkmark"></span>
+                            Exclude Ambiguous <span class="tooltip-icon" title="Excludes similar characters like i, l, 1, L, o, 0, O"><i class="fas fa-info-circle"></i></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="generate-btn">
+                <span>Generate Password</span> <i class="fas fa-bolt"></i>
+            </button>
+        </main>
+    </div>
+    
+    <div class="history-sidebar" id="history-sidebar">
+        <div class="history-header">
+            <h2>Recent Passwords</h2>
+            <button id="history-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="history-list" id="history-list">
+            <!-- History items will be injected here -->
+            <div class="empty-history">No history yet.</div>
+        </div>
+        <button id="clear-history-btn" class="clear-btn" style="display: none;">Clear History</button>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i> Password copied!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
