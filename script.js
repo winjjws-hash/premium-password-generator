@@ -73,7 +73,7 @@ function updateSliderBackground(slider) {
 lengthEl.addEventListener('input', (e) => {
     lengthValEl.innerText = e.target.value;
     updateSliderBackground(e.target);
-    generatePasswordAndDisplay(false); 
+    generatePasswordAndDisplay(false, false); 
 });
 
 updateSliderBackground(lengthEl);
@@ -95,7 +95,7 @@ function copyToClipboard(text, iconElement) {
 }
 
 generateEl.addEventListener('click', () => {
-    generatePasswordAndDisplay(true); 
+    generatePasswordAndDisplay(true, true); 
     
     bgMesh.style.transform = 'scale(1.05)';
     setTimeout(() => {
@@ -103,9 +103,18 @@ generateEl.addEventListener('click', () => {
     }, 300);
 });
 
-[uppercaseEl, lowercaseEl, numbersEl, symbolsEl, excludeAmbiguousEl].forEach(el => {
-    el.addEventListener('change', () => generatePasswordAndDisplay(false));
+[uppercaseEl, lowercaseEl, numbersEl, symbolsEl].forEach(el => {
+    el.addEventListener('change', (e) => {
+        const checkedCount = [uppercaseEl, lowercaseEl, numbersEl, symbolsEl].filter(cb => cb.checked).length;
+        if (checkedCount === 0) {
+            e.target.checked = true;
+            showErrorToast("At least one type must be selected!");
+            return;
+        }
+        generatePasswordAndDisplay(false, false);
+    });
 });
+excludeAmbiguousEl.addEventListener('change', () => generatePasswordAndDisplay(false, false));
 
 function resetPwnedStatus() {
     pwnedVal.innerText = "Check Now";
@@ -114,7 +123,7 @@ function resetPwnedStatus() {
     pwnedIcon.style.color = "var(--secondary)";
 }
 
-function generatePasswordAndDisplay(saveHistory = false) {
+function generatePasswordAndDisplay(saveHistory = false, animate = false) {
     resetPwnedStatus();
     
     const length = +lengthEl.value;
@@ -142,8 +151,6 @@ function generatePasswordAndDisplay(saveHistory = false) {
     }
 
     if (pool === '') {
-        resultEl.value = '';
-        updateStrength(0, 0); 
         return;
     }
 
@@ -165,13 +172,50 @@ function generatePasswordAndDisplay(saveHistory = false) {
     // True Cryptographic Shuffle
     generatedPassword = shuffleArray(generatedPassword.split('')).join('');
 
-    resultEl.value = generatedPassword;
+    if (animate) {
+        animateDecryption(generatedPassword);
+    } else {
+        resultEl.value = generatedPassword;
+        adjustFontSize(generatedPassword.length);
+    }
     
     updateStrength(pool.length, length);
     
     if (saveHistory) {
         addToHistory(generatedPassword);
     }
+}
+
+function adjustFontSize(len) {
+    if (len > 48) resultEl.style.fontSize = '1.0rem';
+    else if (len > 32) resultEl.style.fontSize = '1.15rem';
+    else if (len > 24) resultEl.style.fontSize = '1.3rem';
+    else resultEl.style.fontSize = '1.5rem';
+}
+
+function animateDecryption(finalPassword) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
+    let iterations = 0;
+    const maxIterations = finalPassword.length > 30 ? 2 : 3; 
+    
+    adjustFontSize(finalPassword.length);
+    
+    clearInterval(window.decodeInterval);
+    window.decodeInterval = setInterval(() => {
+        resultEl.value = finalPassword.split('').map((letter, index) => {
+            if (index < iterations) {
+                return finalPassword[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+        }).join('');
+        
+        iterations += 1/maxIterations;
+        
+        if (iterations >= finalPassword.length) {
+            clearInterval(window.decodeInterval);
+            resultEl.value = finalPassword;
+        }
+    }, 20);
 }
 
 function getRandomChar(str) {
@@ -237,7 +281,22 @@ function formatTime(seconds) {
 }
 
 function showToast() {
+    toastEl.innerHTML = '<i class="fas fa-check-circle"></i> Password copied!';
     toastEl.classList.add('show');
+    toastEl.style.borderColor = 'var(--primary)';
+    toastEl.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow)';
+    toastEl.querySelector('i').className = 'fas fa-check-circle';
+    toastEl.querySelector('i').style.color = 'var(--primary)';
+    setTimeout(() => { toastEl.classList.remove('show'); }, 2500);
+}
+
+function showErrorToast(msg) {
+    toastEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+    toastEl.classList.add('show');
+    toastEl.style.borderColor = 'var(--strength-weak)';
+    toastEl.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(239, 68, 68, 0.4)';
+    toastEl.querySelector('i').className = 'fas fa-exclamation-triangle';
+    toastEl.querySelector('i').style.color = 'var(--strength-weak)';
     setTimeout(() => { toastEl.classList.remove('show'); }, 2500);
 }
 
@@ -356,4 +415,4 @@ async function checkPwned(password) {
 }
 
 // Init
-generatePasswordAndDisplay(true); 
+generatePasswordAndDisplay(true, true); 

@@ -34,15 +34,23 @@ body {
     padding: 1rem;
 }
 
+@keyframes blob-float {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
 .background-mesh {
     position: absolute;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    top: -50%; left: -50%; width: 200%; height: 200%;
     background: 
-        radial-gradient(circle at 20% 40%, var(--primary-glow), transparent 30%),
-        radial-gradient(circle at 80% 60%, var(--secondary-glow), transparent 30%);
+        radial-gradient(circle at 40% 40%, var(--primary-glow), transparent 40%),
+        radial-gradient(circle at 60% 60%, var(--secondary-glow), transparent 40%);
+    background-size: 150% 150%;
     filter: blur(80px);
     z-index: 0;
-    transition: background 0.5s ease;
+    transition: transform 0.5s ease-out, background 0.5s ease;
+    animation: blob-float 25s infinite alternate ease-in-out;
 }
 
 .container {
