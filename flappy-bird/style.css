@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    background-color: #050505;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px; 
+    height: 100vh;
+    max-height: 800px;
+    background: radial-gradient(circle at 50% 100%, #1a0b2e 0%, #050505 100%);
+    box-shadow: 0 0 50px rgba(116, 58, 255, 0.2);
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+@media (max-width: 480px) {
+    #game-container {
+        border-radius: 0;
+        max-height: 100vh;
+    }
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#score-display {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    z-index: 10;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    text-align: center;
+    z-index: 20;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-panel.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -40%) scale(0.9);
+}
+
+.glass-panel h1, .glass-panel h2 {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(79, 172, 254, 0.5);
+    letter-spacing: 2px;
+}
+
+.glass-panel h2 {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+    -webkit-background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 8, 68, 0.5);
+}
+
+.glass-panel p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    word-break: keep-all;
+}
+
+.score-board {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.score-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-box span {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.score-box strong {
+    font-size: 2.5rem;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.glow-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3), inset 0 0 0 1px rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.glow-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px rgba(118, 75, 162, 0.5), inset 0 0 0 1px rgba(255,255,255,0.3);
+    background: linear-gradient(135deg, #7085ec 0%, #8253b2 100%);
+}
+
+.glow-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 5px 10px rgba(118, 75, 162, 0.3);
+}
+
+@keyframes float {
+    0% { transform: translate(-50%, -50%); }
+    50% { transform: translate(-50%, -52%); }
+    100% { transform: translate(-50%, -50%); }
+}
+
+#start-screen:not(.hidden) {
+    animation: float 4s ease-in-out infinite;
+}

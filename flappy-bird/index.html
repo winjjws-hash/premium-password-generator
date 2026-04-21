@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Dash - Modern Flappy Bird</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="score-display">0</div>
+        
+        <!-- 게임 시작 화면 -->
+        <div id="start-screen" class="glass-panel">
+            <h1>NEON DASH</h1>
+            <p>스페이스바 또는 화면 터치로 날아오르세요!</p>
+            <button id="start-btn" class="glow-btn">게임 시작</button>
+        </div>
+
+        <!-- 게임 오버 화면 -->
+        <div id="game-over-screen" class="glass-panel hidden">
+            <h2>GAME OVER</h2>
+            <div class="score-board">
+                <div class="score-box">
+                    <span>SCORE</span>
+                    <strong id="final-score">0</strong>
+                </div>
+                <div class="score-box">
+                    <span>BEST</span>
+                    <strong id="best-score">0</strong>
+                </div>
+            </div>
+            <button id="restart-btn" class="glow-btn">다시 시작 (Space)</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
